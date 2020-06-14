@@ -23,10 +23,14 @@ func (c Client) Envs(user *User, org Org) ([]Environment, error) {
 	return envs, err
 }
 
-func (c Client) DialWsep(ctx context.Context, env Environment) (*websocket.Conn, error) {
+func (c Client) DialWsep(ctx context.Context, env Environment, container string) (*websocket.Conn, error) {
 	u := c.copyURL()
 	u.Scheme = c.wsScheme()
 	u.Path = "/proxy/environments/" + env.ID + "/wsep"
+
+	vals := u.Query()
+	vals.Set("container", container)
+	u.RawQuery = vals.Encode()
 
 	ctx, cancel := context.WithTimeout(ctx, time.Second*15)
 	defer cancel()
