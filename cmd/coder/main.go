@@ -39,6 +39,7 @@ func (r *rootCmd) Subcommands() []cli.Command {
 		&urlCmd{},
 		&versionCmd{},
 		&configSSHCmd{},
+		&logsCmd{},
 	}
 }
 
