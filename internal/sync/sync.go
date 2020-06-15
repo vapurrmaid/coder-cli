@@ -68,7 +68,7 @@ func (s Sync) syncPaths(delete bool, local, remote string) error {
 }
 
 func (s Sync) remoteRm(ctx context.Context, remote string) error {
-	conn, err := s.Client.DialWsep(ctx, s.Environment)
+	conn, err := s.Client.DialWsep(ctx, s.Environment, "")
 	if err != nil {
 		return err
 	}
