@@ -26,9 +26,9 @@ func (c Client) Registries(ctx context.Context, orgID string) ([]Registry, error
 }
 
 // RegistryByID fetches a registry resource by its ID.
-func (c Client) RegistryByID(ctx context.Context, orgID, registryID string) (*Registry, error) {
+func (c Client) RegistryByID(ctx context.Context, registryID string) (*Registry, error) {
 	var r Registry
-	if err := c.requestBody(ctx, http.MethodGet, "/api/orgs/"+orgID+"/registries/"+registryID, nil, &r); err != nil {
+	if err := c.requestBody(ctx, http.MethodGet, "/api/registries/"+registryID, nil, &r); err != nil {
 		return nil, err
 	}
 	return &r, nil
@@ -43,13 +43,13 @@ type UpdateRegistryReq struct {
 }
 
 // UpdateRegistry applies a partial update to a registry resource.
-func (c Client) UpdateRegistry(ctx context.Context, orgID, registryID string, req UpdateRegistryReq) error {
-	return c.requestBody(ctx, http.MethodPatch, "/api/orgs/"+orgID+"/registries/"+registryID, req, nil)
+func (c Client) UpdateRegistry(ctx context.Context, registryID string, req UpdateRegistryReq) error {
+	return c.requestBody(ctx, http.MethodPatch, "/api/registries/"+registryID, req, nil)
 }
 
 // DeleteRegistry deletes a registry resource by its ID.
-func (c Client) DeleteRegistry(ctx context.Context, orgID, registryID string) error {
-	return c.requestBody(ctx, http.MethodDelete, "/api/orgs/"+orgID+"/registries/"+registryID, nil, nil)
+func (c Client) DeleteRegistry(ctx context.Context, registryID string) error {
+	return c.requestBody(ctx, http.MethodDelete, "/api/registries/"+registryID, nil, nil)
 }
 
 // CreateRegistryReq defines the request parameters for creating a new registry resource.
