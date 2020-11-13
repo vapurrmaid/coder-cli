@@ -51,3 +51,20 @@ func (c Client) UpdateRegistry(ctx context.Context, orgID, registryID string, re
 func (c Client) DeleteRegistry(ctx context.Context, orgID, registryID string) error {
 	return c.requestBody(ctx, http.MethodDelete, "/api/orgs/"+orgID+"/registries/"+registryID, nil, nil)
 }
+
+// CreateRegistryReq defines the request parameters for creating a new registry resource.
+type CreateRegistryReq struct {
+	FriendlyName string `json:"friendly_name"`
+	Registry     string `json:"registry"`
+	Username     string `json:"username"`
+	Password     string `json:"password"`
+}
+
+// CreateRegistry creates a new registry resource in an organization.
+func (c Client) CreateRegistry(ctx context.Context, orgID string, req CreateRegistryReq) (*Registry, error) {
+	var r Registry
+	if err := c.requestBody(ctx, http.MethodPost, "/api/orgs/"+orgID+"/registries", req, &r); err != nil {
+		return nil, err
+	}
+	return &r, nil
+}
