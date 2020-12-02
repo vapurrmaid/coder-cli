@@ -46,6 +46,14 @@ func (c Client) Me(ctx context.Context) (*User, error) {
 	return c.UserByID(ctx, Me)
 }
 
+// MyUXState updates the authenticated user's UX State.
+func (c Client) MyUXState(ctx context.Context, uxsPartial map[string]interface{}) error {
+	if err := c.requestBody(ctx, http.MethodPut, "/api/private/users/me/ux-state", uxsPartial, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 // UserByID get the details of a user by their id.
 func (c Client) UserByID(ctx context.Context, id string) (*User, error) {
 	var u User

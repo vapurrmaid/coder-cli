@@ -135,6 +135,7 @@ func configSSH(configpath *string, remove *bool) func(cmd *cobra.Command, _ []st
 			fmt.Printf("Your private ssh key was written to \"%s\"\n", privateKeyFilepath)
 		}
 
+		writeSSHUXState(ctx, client)
 		fmt.Printf("An auto-generated ssh config was written to \"%s\"\n", *configpath)
 		fmt.Println("You should now be able to ssh into your environment")
 		fmt.Printf("For example, try running\n\n\t$ ssh coder.%s\n\n", envs[0].Name)
@@ -214,4 +215,13 @@ func readStr(filename string) (string, error) {
 		return "", err
 	}
 	return string(contents), nil
+}
+
+func writeSSHUXState(ctx context.Context, client *coder.Client) {
+	// Update UXState that coder config-ssh has been run by the currently
+	// authenticated user
+	err := client.MyUXState(ctx, map[string]interface{}{"cliSSHConfigured": true})
+	if err != nil {
+		fmt.Println("⚠ The Coder web client may not recognize that you've configured SSH.")
+	}
 }
